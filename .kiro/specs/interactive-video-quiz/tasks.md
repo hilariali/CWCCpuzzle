@@ -27,7 +27,7 @@
     - _Requirements: 1.4, 2.3, 3.2_
 
 - [ ] 3. Build authentication system
-  - [ ] 3.1 Implement user registration and login API endpoints
+  - [x] 3.1 Implement user registration and login API endpoints
     - Create POST /api/auth/register endpoint with email validation and password hashing
     - Create POST /api/auth/login endpoint with JWT token generation
     - Implement role-based user creation (teacher/student)
