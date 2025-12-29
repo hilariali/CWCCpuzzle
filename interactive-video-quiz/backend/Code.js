@@ -45,12 +45,16 @@ function doPost(e) {
             } else if (action === 'assignVideo') {
                 return assignVideo(data);
             }
+
+            // Explicitly handle unknown actions to debug version issues
+            return errorResponse('Unknown action: ' + action);
+
         } catch (err) {
-            return errorResponse(err.toString());
+            return errorResponse('Backend Error: ' + err.toString());
         }
     }
 
-    return ContentService.createTextOutput(JSON.stringify({ error: 'Invalid request' })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({ error: 'No POST data received' })).setMimeType(ContentService.MimeType.JSON);
 }
 
 // --- Auth Operations ---
