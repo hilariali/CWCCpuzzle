@@ -1,32 +1,35 @@
-# Backend Setup Instructions
+# Backend Setup Instructions (Phase 2 Update)
 
-Since this application uses Google Sheets as a database, you need to deploy the backend code on your Google account.
+This update adds Authentication and Class Management capabilities.
 
 ## Steps
 
-1.  **Create a Google Sheet**
-    - Go to [sheets.google.com](https://sheets.google.com) and create a new blank spreadsheet.
-    - Name it "EdPuzzle Clone DB".
+1.  **Open your existing Google Sheet** (or create a new one).
 
 2.  **Open Apps Script**
-    - In the spreadsheet, go to **Extensions** > **Apps Script**.
+    - Go to **Extensions** > **Apps Script**.
 
-3.  **Paste Code**
-    - Copy the content of `backend/Code.js` from this project.
-    - Paste it into the `Code.gs` file in the Apps Script editor (replace any existing code).
+3.  **Update Code**
+    - Copy the ENTIRE content of `backend/Code.js` from this project.
+    - Replace everything in your `Code.gs` file in the Apps Script editor.
     - Save the project (Cmd/Ctrl + S).
 
-4.  **Deploy as Web App**
-    - Click **Deploy** > **New deployment**.
-    - Click the "Select type" (gear icon) next to "Select type" and choose **Web app**.
-    - **Description**: "EdPuzzle Backend"
-    - **Execute as**: **Me** (your email).
-    - **Who has access**: **Anyone** (This is important so the frontend can access it).
+4.  **Critical: Redeploy as Web App**
+    - Click **Deploy** > **Manage deployments**.
+    - Click the **pencil icon** (Edit) next to your active deployment.
+    - Under **Version**, check the box for **"New version"**. (This is CRITICAL, otherwise code changes won't take effect).
+    - ensure **Execute as: Me** and **Who has access: Anyone**.
     - Click **Deploy**.
 
-5.  **Get the URL**
-    - Copy the **Web App URL** provided after deployment.
-    - It should look like `https://script.google.com/macros/s/.../exec`.
+5.  **Verify URL**
+    - The URL usually stays the same if you edit the existing deployment. If it changes, update `src/services/api.js`.
 
-6.  **Update Frontend**
-    - Open `src/services/api.js` (or created configuration file) and replace the `API_URL` with your new Web App URL.
+## Data Schema (Auto-created)
+The script will automatically create these sheets when accessed if they don't exist:
+- `Videos`: Video content.
+- `Interactions`: Quiz questions.
+- `Responses`: Student answers.
+- `Users`: Stores user accounts (Email, Password, Role).
+- `Classes`: Stores class metadata.
+- `Enrollments`: Links students to classes.
+- `Assignments`: Links videos to classes.

@@ -11,29 +11,59 @@ const post = async (data) => {
 };
 
 export const api = {
+    // Auth
+    register: async (email, password, name, role) => {
+        return post({ action: 'register', email, password, name, role });
+    },
+
+    login: async (email, password) => {
+        return post({ action: 'login', email, password });
+    },
+
+    // Class & Assignment
+    createClass: async (name, teacherEmail, description) => {
+        return post({ action: 'createClass', name, teacherEmail, description });
+    },
+
+    addStudentToClass: async (classId, studentEmail) => {
+        return post({ action: 'addStudentToClass', classId, studentEmail });
+    },
+
+    getTeacherClasses: async (email) => {
+        return axios.get(`${API_URL}?action=getTeacherClasses&email=${email}`);
+    },
+
+    getStudentClasses: async (email) => {
+        return axios.get(`${API_URL}?action=getStudentClasses&email=${email}`);
+    },
+
+    getClass: async (classId) => {
+        return axios.get(`${API_URL}?action=getClass&classId=${classId}`);
+    },
+
+    assignVideo: async (classId, videoId, dueDate) => {
+        return post({ action: 'assignVideo', classId, videoId, dueDate });
+    },
+
     // Video Operations
     createVideo: async (url, title) => {
-        // GAS implementation: expects action, url, title
-        const res = await post({ action: 'createVideo', url, title });
-        return res;
+        return post({ action: 'createVideo', url, title });
     },
 
     getAllVideos: async () => {
-        // GAS implementation: action=getAllVideos
-        const res = await axios.get(`${API_URL}?action=getAllVideos`);
-        return res;
+        // Return all videos for public/teacher library. Use carefully if we have privacy.
+        // For now, let's allow teachers to see "Library".
+        return axios.get(`${API_URL}?action=getAllVideos`);
     },
 
     getVideo: async (videoId) => {
-        // GAS implementation: action=getVideo&videoId=...
-        const res = await axios.get(`${API_URL}?action=getVideo&videoId=${videoId}`);
-        return res;
+        return axios.get(`${API_URL}?action=getVideo&videoId=${videoId}`);
     },
 
     // Interaction Operations
     saveInteractions: async (videoId, interactions) => {
         // GAS implementation: action=saveInteractions
-        // Clean interactions to ensure no circular references or extra react stuff if any
+        // Clean interactions
         const cleanInteractions = interactions.map(i => ({
             id: i.id,
             timestamp: i.timestamp,
@@ -43,19 +73,17 @@ export const api = {
             correctAnswer: i.correctAnswer
         }));
 
-        const res = await post({ action: 'saveInteractions', videoId, interactions: cleanInteractions });
-        return res;
+        return post({ action: 'saveInteractions', videoId, interactions: cleanInteractions });
     },
 
     // Response Operations
     submitResponse: async (studentId, videoId, interactionId, answer) => {
-        const res = await post({
+        return post({
             action: 'submitResponse',
             studentId,
             videoId,
             interactionId,
             answer
         });
-        return res;
     }
 };
